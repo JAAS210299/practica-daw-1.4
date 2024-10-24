@@ -28,5 +28,21 @@ a2ensite default-ssl.conf
 # Habilitamos el módulo SSL en Apache.
 sudo a2enmod ssl
 
+# Copiamos el archivo de configuración de Apache para HTTP
+cp ../conf/000-default.conf /etc/apache2/sites-available
+
+# 1.5 Cómo consultar la fecha de caducidad del certificado
+# openssl x509 -in /etc/ssl/certs/apache-selfsigned.crt -noout -dates
+
+# Habilitamos el virtual host que acabamos de configurar.
+sudo a2ensite default-ssl.conf
+
+#Para que el servidor web Apache pueda hacer la redirección de HTTP a HTTPS es necesario habilitar el módulo rewrite en Apache.
+sudo a2enmod rewrite
+
 # Reiniciamos el servicio de Apache
-systemctl restart apache2
+sudo systemctl restart apache2
+
+# Tenemos que agregar el DNS a nuestra máquina local
+# sudo echo "3.230.202.96 practica-https.local" >> /etc/hosts
+# sudo echo "3.230.202.96 practica-https.local" | tee /etc/hosts
